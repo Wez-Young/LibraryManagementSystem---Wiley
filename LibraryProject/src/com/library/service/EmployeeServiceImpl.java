@@ -6,45 +6,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import com.library.entities.Employee;
+import com.library.persistence.EmployeeDao;
 
 public class EmployeeServiceImpl implements EmployeeService {
 	
+	//@Autowired
+	//private RestTemplate restTemplate;
+	
 	@Autowired
-	private RestTemplate restTemplate;
+	private EmployeeDao employeeDao;
 
 	@Override
 	public Collection<Employee> getEmployees() {
-		return 
+		return employeeDao.findAll();
 	}
 
 	@Override
 	public Employee getEmployeeById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return employeeDao.findById(id).orElse(null);
 	}
 
 	@Override
 	public boolean addNewEmployee(Employee employee) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			int rows = employeeDao.insertEmployee(employee.getId(), employee.getName(), employee.getBooks());
+			if (rows > 0)
+				return true;
+			}
+			catch(Exception ex) {
+				return false;
+			}
+			return false;
 	}
 
 	@Override
 	public boolean updateEmployee(Employee employee) {
-		// TODO Auto-generated method stub
-		return false;
+		employeeDao.updateEmployee(employee.getId(), employee.getName(), employee.getBooks());
+		return true;
 	}
 
 	@Override
 	public boolean deleteEmployee(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		employeeDao.deleteById(id);
+
+		return true;
 	}
 
 	@Override
 	public Collection<Employee> getEmployeesByBookType(String booktype) {
-		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 }
