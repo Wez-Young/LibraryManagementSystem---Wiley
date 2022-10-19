@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Book {
 	@Id
+	int bookId;
 	String type;
 	double lateFee;
 	int totalIssued;
