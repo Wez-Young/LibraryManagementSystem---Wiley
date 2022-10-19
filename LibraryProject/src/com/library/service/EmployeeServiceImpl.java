@@ -10,8 +10,8 @@ import com.library.persistence.EmployeeDao;
 
 public class EmployeeServiceImpl implements EmployeeService {
 	
-	//@Autowired
-	//private RestTemplate restTemplate;
+	@Autowired
+	private RestTemplate restTemplate;
 	
 	@Autowired
 	private EmployeeDao employeeDao;
@@ -55,6 +55,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public Collection<Employee> getEmployeesByBookType(String bookType) {
 		return employeeDao.getEmployeesByBookType(bookType);	
+	}
+	
+	@Override
+	public Employee loginEmployee(Employee employee) {
+		return restTemplate.getForObject("http://localhost:8084/login/"+employee.getId(), Employee.class);
 	}
 
 }
