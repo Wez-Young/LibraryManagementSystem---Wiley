@@ -53,8 +53,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public Collection<Employee> getEmployeesByBookType(String booktype) {
-		
+	public Collection<Employee> getEmployeesByBookType(String bookType) {
+		return employeeDao.getEmployeesByBookType(bookType);	
 	}
 
 }
