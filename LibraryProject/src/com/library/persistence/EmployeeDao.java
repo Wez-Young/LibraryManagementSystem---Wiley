@@ -25,5 +25,16 @@ public interface EmployeeDao extends JpaRepository<Employee, Integer> {
 	@Modifying
 	@Query(value = "insert into employee values(:id,:name,:books)",nativeQuery = true)
 	public int insertEmployee(@Param("id") int id,@Param("name") String name, @Param("books") Collection<IssuedBook> books);
+	
+	
+	@Transactional
+	@Modifying
+	@Query(value = "SELECT e.id, e.name FROM employee e WHERE ARRAY_CONTAINS(e.books,{'type': :bookType}, true)")
+	public Collection<Employee> getEmployeesByBookType(@Param("bookType") String bookType);
+	
+	/*
+	 * possible left join employees with issued 
+	 */
+	
 
 }
