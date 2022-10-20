@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.library.entity.Book;
 import com.library.model.persistence.BookDao;
 
+@Service
 public class BookServiceImpl implements BookService {
 
 	@Autowired
@@ -28,7 +30,7 @@ public class BookServiceImpl implements BookService {
 		//libraryDao.save(book);
 		
 		try {
-			int rows = bookDao.insertBook(book.getBookId(), book.getType(), book.getLateFee(), book.getTotalIssued(), book.getIssuedBooks());
+			int rows = bookDao.insertBook(book.getBookId(), book.getType(), book.getLateFee(), book.getTotalIssued());
 			if (rows > 0)
 				return true;
 			}

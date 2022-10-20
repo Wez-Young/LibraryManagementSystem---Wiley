@@ -21,12 +21,11 @@ public interface BookDao extends JpaRepository<Book, Integer> {
 	
 	@Transactional
 	@Modifying
-	@Query(value = "insert into books values(:bookId,:type,:lateFee,:totalIssued,:issuedBooks)",nativeQuery = true)
+	@Query(value = "insert into book values(:bookId,:lateFee,:totalIssued,:type)",nativeQuery = true)
 	public int insertBook(
 			@Param("bookId") int bookId,
 			@Param("type") String type,
 			@Param("lateFee") double lateFee,
-			@Param("totalIssued") int totalIssued, 
-			@Param("issuedBooks") Collection<IssuedBook> issuedBooks);
+			@Param("totalIssued") int totalIssued);
 
 }

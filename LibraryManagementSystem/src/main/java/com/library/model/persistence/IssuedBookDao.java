@@ -20,7 +20,7 @@ public List<IssuedBook> findByType(String type);
 	
 	@Transactional
 	@Modifying
-	@Query(value = "insert into issuedBooks values(:id,:type,:issuedDate,:expectedReturn,:actualReturn,:lateReturnFee)",nativeQuery = true)
+	@Query(value = "insert into issuedBook values(:id,:actualReturn,:expectedReturn,:issuedDate,:lateReturnFee, :type)",nativeQuery = true)
 	public int insertIssuedBook(
 			@Param("id") int bookId,
 			@Param("type") String type,
