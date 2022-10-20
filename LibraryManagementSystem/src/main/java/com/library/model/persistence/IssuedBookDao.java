@@ -29,7 +29,7 @@ public List<IssuedBook> findByType(String type);
 			@Param("actualReturn") LocalDate actualReturn,
 			@Param("lateReturnFee") double lateReturnFee);
 	
-	@Query("SELECT book FROM libraryemployees_books i WHERE id = :empId ")
+	@Query(value = "SELECT id, actualReturn, expectedReturn, issuedDate, lateReturnFee, type FROM IssuedBook i inner join libraryemployees_books e WHERE e.employee_id = :empId and id = :empId", nativeQuery = true)
 	Collection<IssuedBook> findAllLibraryEmployeesIssuedBooks(@Param("empId") int id);
 
 
