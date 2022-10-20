@@ -28,7 +28,7 @@ public class LibraryServiceImpl implements LibraryService {
 		//libraryDao.save(book);
 		
 		try {
-			int rows = libraryDao.insertBook(book.getType(), book.getLateFee(), book.getTotalIssued(), book.getIssuedBooks());
+			int rows = libraryDao.insertBook(book.getBookId(), book.getType(), book.getLateFee(), book.getTotalIssued(), book.getIssuedBooks());
 			if (rows > 0)
 				return true;
 			}
@@ -40,7 +40,7 @@ public class LibraryServiceImpl implements LibraryService {
 
 	@Override
 	public boolean updateBook(Book book) {	
-		libraryDao.updateBook(book.getType(), book.getLateFee(), book.getTotalIssued(), book.getIssuedBooks());
+		libraryDao.updateBook(book.getBookId(), book.getType(), book.getLateFee(), book.getTotalIssued(), book.getIssuedBooks());
 		return true;
 	}
 

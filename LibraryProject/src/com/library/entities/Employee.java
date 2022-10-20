@@ -19,6 +19,6 @@ public class Employee {
 	int id;
 	String name;
 	@OneToMany
-	Collection<Book> books;
+	Collection<IssuedBook> books;
 
 }

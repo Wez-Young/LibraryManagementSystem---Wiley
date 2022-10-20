@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.springframework.stereotype.Service;
 
 import com.library.entities.Employee;
-import com.sujata.entity.User;
 
 @Service
 public interface EmployeeService {
