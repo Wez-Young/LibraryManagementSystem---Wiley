@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Books Issued</title>
+</head>
+<body>
+<h1> Current books </h1>
+<table border = "1">
+  <tr>
+    <th>Book ID</th>
+    <th>Book Type</th>
+    <th>Book Name</th>
+    <th>Expected Return</th>
+    <th>Current Late Fee</th>
+    <th>Returned?</th>
+  </tr>
+  <tr th:each="book: ${employee.books}">
+    <td th:text="${book.id}"/>
+    <td th:text="${book.type}"/>
+    <td th:text="${book.name}"/>
+    <td th:text="${book.expectedReturn}"/>
+    <td th:text="${book.actualReturn}"/>
+	<td th:text="${book.lateFee}"/>
+	</tr>
+</table>
+<a href="./returnIssuedBookById">Return Issued Book</a>
+<a href="./issueNewBook">Issue New Book</a>
+<br>
+<br>
+</body>
+</html>
