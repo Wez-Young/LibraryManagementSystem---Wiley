@@ -28,5 +28,9 @@ public List<IssuedBook> findByType(String type);
 			@Param("expectedReturn") LocalDate expectedReturn, 
 			@Param("actualReturn") LocalDate actualReturn,
 			@Param("lateReturnFee") double lateReturnFee);
+	
+	@Query("SELECT book FROM libraryemployees_books i WHERE id = :empId ")
+	Collection<IssuedBook> findAllLibraryEmployeesIssuedBooks(@Param("empId") int id);
+
 
 }

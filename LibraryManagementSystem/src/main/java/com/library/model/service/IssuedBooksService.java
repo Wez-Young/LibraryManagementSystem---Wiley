@@ -12,6 +12,7 @@ public interface IssuedBooksService {
 	
 	IssuedBook getIssuedBookById(int id);
 	Collection<IssuedBook> getAllIssuedBooks();
+	Collection<IssuedBook> getAllIssuedBooksByEmployeeId(int id);
 	boolean addNewIssuedBook(IssuedBook book);
 	boolean updateIssuedBook(IssuedBook book);
 	boolean deleteIssuedBookById(int id);

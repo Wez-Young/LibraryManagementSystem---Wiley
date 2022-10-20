@@ -66,4 +66,9 @@ public class IssuedBooksServiceImpl implements IssuedBooksService {
 		return issuedBookDao.findByType(type);
 	}
 
+	@Override
+	public Collection<IssuedBook> getAllIssuedBooksByEmployeeId(int id) {
+		return issuedBookDao.findAllLibraryEmployeesIssuedBooks(id);
+	}
+
 }

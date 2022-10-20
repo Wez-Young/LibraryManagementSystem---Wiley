@@ -15,6 +15,14 @@
     <th>Current Late Fee</th>
     <th>Returned?</th>
   </tr>
+   <tr th:each="book: ${employee.books}">
+    <td th:text="${book.id}"/>
+    <td th:text="${book.type}"/>
+    <td th:text="${book.name}"/>
+    <td th:text="${book.expectedReturn}"/>
+    <td th:text="${book.actualReturn}"/>
+	<td th:text="${book.lateFee}"/>
+	</tr>
 
 </table>
 <a href="./returnIssuedBookById">Return Issued Book</a>
