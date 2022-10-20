@@ -2,12 +2,15 @@ package com.library.controller;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.library.entity.Employee;
 import com.library.entity.IssuedBook;
 import com.library.model.service.EmployeeService;
 import com.library.model.service.IssuedBooksService;
@@ -18,7 +21,7 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	@Autowired
 	private IssuedBooksService ibs;
-	
+
 	@RequestMapping("/")
 	public ModelAndView getMenuPageController() {
 		ModelAndView modelAndView = new ModelAndView();
@@ -28,6 +31,19 @@ public class EmployeeController {
 
 		return modelAndView;
 	}
-	
 
+	@RequestMapping("/loginEmployee")
+	public ModelAndView loginCheck(@ModelAttribute("command") Employee employee, HttpSession session) {
+		ModelAndView modelAndView = new ModelAndView();
+		Employee emp = employeeService.loginEmployee(employee);
+		if (emp != null) {
+			modelAndView.addObject("employee", emp); // request Scope
+			session.setAttribute("employee", emp);
+			modelAndView.setViewName("Menu");
+		} else {
+			modelAndView.addObject("message", "Login Failed!");
+			modelAndView.setViewName("Login");
+		}
+		return modelAndView;
+	}
 }
