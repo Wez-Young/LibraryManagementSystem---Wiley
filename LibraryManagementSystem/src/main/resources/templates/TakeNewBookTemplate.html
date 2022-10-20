@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" href="library.css">
+<title>Take out a book</title>
+</head>
+<body>
+  <h1>Take out a book</h1>
+  <table border = "1">
+    <tr>
+      <th>Book ID</th>
+      <th>Book Type</th>
+      <th>Book Name</th>
+      <th>Late Fee Rate</th>
+      <th>Total Issued</th>
+    </tr>
+    <tr th:each="book: ${library}">
+      <td th:text="${book.id}"/>
+      <td th:text="${book.type}"/>
+      <td th:text="${book.name}"/>
+      <td th:text="${book.lateFee}"/>
+      <td th:text="${book.totalIssued}"/>
+  	</tr>
+  </table>
+  <br>
+  <br>
+
+  <form action="#" th:action="@{./takeBook}" th:object="${command}"
+		method="post">
+		Enter Book ID : <input type="text" th:field="*{id}"><br>
+		<br> Enter Today's Date : <input type="date"
+			th:field="*{issueDate}"><br> <br> <input
+			type="submit" value="Take Book">
+	</form>
+
+</body>
+</html>
