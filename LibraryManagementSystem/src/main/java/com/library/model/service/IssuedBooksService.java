@@ -19,6 +19,6 @@ public interface IssuedBooksService {
 	boolean updateIssuedBook(IssuedBook book);
 	boolean deleteIssuedBookById(int id);
 	List<IssuedBook> searchIssuedBooksByType(String type);
-	public boolean addIssuedBook(IssuedBook book, HttpSession session);
+	public boolean addIssuedBookToRelationship(IssuedBook book, HttpSession session);
 
 }

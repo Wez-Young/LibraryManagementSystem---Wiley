@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class IssuedBook {
-	@Id @GeneratedValue
+	@Id
 	private int id;
 	private String type;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -1,6 +1,7 @@
 package com.library.model.service;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -17,9 +18,7 @@ public class IssuedBooksServiceImpl implements IssuedBooksService {
 
 	@Autowired
 	private IssuedBookDao issuedBookDao;
-	@Autowired
-	private HttpSession session;
-	
+
 	@Override
 	public IssuedBook getIssuedBookById(int id) {
 		return issuedBookDao.findById(id).orElse(null);
@@ -32,46 +31,37 @@ public class IssuedBooksServiceImpl implements IssuedBooksService {
 
 	@Override
 	public boolean addNewIssuedBook(IssuedBook book) {
+		IssuedBook temp = issuedBookDao.findAll().stream().max(Comparator.comparing(IssuedBook::getId)).get();
+		book.setId(temp.getId()+1);
 		try {
-			int rows = issuedBookDao.insertIssuedBook(
-					book.getId(), 
-					book.getType(),
-					book.getIssuedDate(), 
-					book.getExpectedReturn(), 
-					book.getActualReturn(), 
-					book.getLateReturnFee(),
-					book.isReturned()
-					);
+			int rows = issuedBookDao.insertIssuedBook(book.getId(), book.getType(), book.getIssuedDate(),
+					book.getExpectedReturn(), book.getActualReturn(), book.getLateReturnFee(), book.isReturned());
 			if (rows > 0)
 				return true;
-			}
-			catch(Exception ex) {
-				return false;
-			}
+		} catch (Exception ex) {
 			return false;
+		}
+		return false;
 	}
-	
-	public boolean addIssuedBook(IssuedBook book, HttpSession session) {
-		User usr = (User)session.getAttribute("employee");
-		try {
-			int rows = issuedBookDao.insertIssuedBookInRelationship(
-					usr.getId(),
-					book.getId() 
-					);
-			if (rows > 0)
-				return true;
-			}
-			catch(Exception ex) {
-				return false;
-			}
-			return false;
+
+	public boolean addIssuedBookToRelationship(IssuedBook book, HttpSession session) {
+		User usr = (User) session.getAttribute("employee");
+		IssuedBook temp = issuedBookDao.findAll().stream().max(Comparator.comparing(IssuedBook::getId)).get();
+		book.setId(temp.getId());
+		System.out.println("Results returned: " + temp.getId() + "Employee id: " + usr.getId());
+
+		int rows = issuedBookDao.insertIssuedBookInRelationship(usr.getId(), book.getId());
+		if (rows > 0)
+			return true;
+
+		return false;
 	}
 
 	@Override
 	public boolean updateIssuedBook(IssuedBook book) {
 		IssuedBook ib = issuedBookDao.findById(book.getId()).orElse(null);
-		
-		if(ib == null)
+
+		if (ib == null)
 			return false;
 		issuedBookDao.save(book);
 		return true;
@@ -90,7 +80,7 @@ public class IssuedBooksServiceImpl implements IssuedBooksService {
 
 	@Override
 	public Collection<IssuedBook> getAllIssuedBooksByEmployeeId(int id) {
-		return issuedBookDao.findAllLibraryEmployeesIssuedBooks(id);
+		return issuedBookDao.findAllIssuedBooksInRelation(id);
 	}
 
 }

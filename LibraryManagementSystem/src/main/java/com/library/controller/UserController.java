@@ -19,8 +19,6 @@ import com.library.model.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private HttpSession session;
 	
 	@RequestMapping("/")
 	public ModelAndView getLoginPage() {
@@ -28,10 +26,11 @@ public class UserController {
 	}
 	
 	@RequestMapping("/loginEmployee")
-	public ModelAndView loginCheck(@ModelAttribute("command") User user/*, HttpSession session*/) {
+	public ModelAndView loginCheck(@ModelAttribute("command") User user, HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView();
 		User usr = userService.loginUser(user);
 		if (usr != null) {
+			System.out.println("User id: " + usr.getId());
 			modelAndView.addObject("employee", usr); // request Scope
 			session.setAttribute("employee", user);
 			modelAndView.setViewName("Menu");

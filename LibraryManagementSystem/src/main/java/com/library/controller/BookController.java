@@ -1,6 +1,7 @@
 package com.library.controller;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +22,6 @@ import com.library.model.service.IssuedBooksService;
 @Controller @Scope("session")
 public class BookController {
 	@Autowired
-	private HttpSession session;
-	@Autowired
 	private BookService bookService;
 	@Autowired
 	private IssuedBooksService ibs;
@@ -42,9 +41,9 @@ public class BookController {
 		return new ModelAndView("IssueNewBook", "command", new IssuedBook());
 	}
 	@RequestMapping("/bookIssued")
-	public ModelAndView issueBook(@ModelAttribute("command") IssuedBook book) {
+	public ModelAndView issueBook(@ModelAttribute("command") IssuedBook book, HttpSession  session) {
 		ModelAndView modelAndView = new ModelAndView();
-
+		book.setId(1);
 		book.setExpectedReturn(book.getIssuedDate().plusDays(7));
 		book.setReturned(false);
 		
@@ -53,11 +52,13 @@ public class BookController {
 			modelAndView.setViewName("IssueNewBook");
 			return modelAndView;
 		}
-		ibs.addNewIssuedBook(book);
-		if(!ibs.addIssuedBook(book, session))
+		
+		if(ibs.addNewIssuedBook(book) && ibs.addIssuedBookToRelationship(book, session))
 			modelAndView.addObject("message", "Book issued");
-		else
+		else {
 			modelAndView.addObject("message", "Book not issued correctly");
+			ibs.deleteIssuedBookById(book.getId());
+		}
 		
 		modelAndView.setViewName("Output");
 

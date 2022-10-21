@@ -11,8 +11,11 @@
 	<select th:field="*{id}">	
 		<option th:each="bookId : ${bookIds}" th:value="${bookId}" th:text="${bookId}"/>
 	</select>
+	
+	<br> Enter Today's Date : <input type="date"
+		th:field="*{actualReturn}"><br> <br>
 	<br> 
-	<input type="submit" value="Issue Book">
+	<input type="submit" value="return Book">
 </form>
 <a href="./menu">Return to menu</a>
 <br>

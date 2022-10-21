@@ -19,7 +19,7 @@
     <th>Current Late Fee</th>
     <th>Returned?</th>
   </tr>
-   <tr th:each="book: ${books}">
+   <tr th:each="book: ${session.books}">
     <td th:text="${book.id}"/>
     <td th:text="${book.type}"/>
     <td th:text="${book.issuedDate}"/>

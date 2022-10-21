@@ -76,7 +76,7 @@ public class IssuedBookController {
 		if (ib == null)
 			message = "Error, could not find book";
 		else {
-			ib.setActualReturn(now);
+			ib.setActualReturn(book.getActualReturn());
 			ib.setReturned(true);
 			
 			Period days = Period.between(ib.getExpectedReturn(), ib.getActualReturn());

@@ -19,20 +19,16 @@ import com.library.model.service.IssuedBooksService;
 public class EmployeeController {
 	@Autowired
 	private IssuedBooksService ibs;
-	@Autowired
-	private HttpSession session;
-	
-	@ModelAttribute("books")
-	Collection<IssuedBook> getIssuedBooks() {	
-		User emp = (User)session.getAttribute("employee");
-		return ibs.getAllIssuedBooksByEmployeeId(emp.getId());
-	}
 	
 	@RequestMapping("/menu")
-	public ModelAndView getMenuPageController() {
+	public ModelAndView getMenuPageController(HttpSession session) {
 		ModelAndView modelAndView = new ModelAndView();
-		if(getIssuedBooks() != null) {
-		modelAndView.addObject("books", getIssuedBooks());
+		User emp = (User)session.getAttribute("employee");
+		Collection<IssuedBook> books =  ibs.getAllIssuedBooksByEmployeeId(emp.getId());
+		if(books != null) {
+			System.out.println("Books size " +books.size());
+			modelAndView.addObject("books", books);
+			session.setAttribute("books", books);
 		}
 		else {
 			modelAndView.addObject("message", "You have no books currently issued");
