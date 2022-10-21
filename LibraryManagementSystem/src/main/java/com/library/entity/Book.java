@@ -21,6 +21,7 @@ public class Book {
 	private String type;
 	private double lateFee;
 	private int totalIssued;
+	private int maxAmountIssued;
 	
 	@OneToMany
 	private Collection<IssuedBook> issuedBooks;

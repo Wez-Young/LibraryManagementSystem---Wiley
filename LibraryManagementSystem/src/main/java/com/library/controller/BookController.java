@@ -42,23 +42,35 @@ public class BookController {
 	}
 	@RequestMapping("/bookIssued")
 	public ModelAndView issueBook(@ModelAttribute("command") IssuedBook book, HttpSession  session) {
+		Book updateBook = bookService.searchBooksByType(book.getType());
 		ModelAndView modelAndView = new ModelAndView();
-		book.setId(1);
-		book.setExpectedReturn(book.getIssuedDate().plusDays(7));
-		book.setReturned(false);
 		
-		if(LocalDate.now().isAfter(book.getIssuedDate())) {
-			modelAndView.addObject("message", "Issue date cannot be before: " + LocalDate.now());
+		if(updateBook.getTotalIssued() + 1 < updateBook.getMaxAmountIssued()) {
+			updateBook.setTotalIssued(updateBook.getTotalIssued()+1);
+			bookService.updateBook(updateBook);
+
+			book.setId(1);
+			book.setExpectedReturn(book.getIssuedDate().plusDays(7));
+			book.setReturned(false);
+			
+			if(LocalDate.now().isAfter(book.getIssuedDate())) {
+				modelAndView.addObject("message", "Issue date cannot be before: " + LocalDate.now());
+				modelAndView.setViewName("IssueNewBook");
+				return modelAndView;
+			}
+			
+			if(ibs.addNewIssuedBook(book) && ibs.addIssuedBookToRelationship(book, session))
+				modelAndView.addObject("message", "Book issued");
+			else {
+				modelAndView.addObject("message", "Book not issued correctly");
+				ibs.deleteIssuedBookById(book.getId());
+			}
+		}else {
+			modelAndView.addObject("message", "You cannot issue any more of this book at this moment in time!");
 			modelAndView.setViewName("IssueNewBook");
 			return modelAndView;
 		}
-		
-		if(ibs.addNewIssuedBook(book) && ibs.addIssuedBookToRelationship(book, session))
-			modelAndView.addObject("message", "Book issued");
-		else {
-			modelAndView.addObject("message", "Book not issued correctly");
-			ibs.deleteIssuedBookById(book.getId());
-		}
+			
 		
 		modelAndView.setViewName("Output");
 

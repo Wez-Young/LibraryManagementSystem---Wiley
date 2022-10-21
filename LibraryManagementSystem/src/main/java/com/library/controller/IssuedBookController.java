@@ -27,7 +27,8 @@ import com.library.entity.User;
 import com.library.model.service.BookService;
 import com.library.model.service.IssuedBooksService;
 
-@Controller @Scope("session")
+@Controller
+@Scope("session")
 public class IssuedBookController {
 
 	@Autowired
@@ -37,27 +38,22 @@ public class IssuedBookController {
 	@Autowired
 	private HttpSession session;
 
-	
 	@ModelAttribute("bookIds")
-	List<Integer> getBookIds() {		
-		User emp = (User)session.getAttribute("employee");
-		
-		return ibs.getAllIssuedBooksByEmployeeId(emp.getId()).stream()
-				.filter(book -> book.isReturned() == false)
-				.map(IssuedBook::getId)
-				.collect(Collectors.toList());
+	List<Integer> getBookIds() {
+		User emp = (User) session.getAttribute("employee");
+
+		return ibs.getAllIssuedBooksByEmployeeId(emp.getId()).stream().filter(book -> book.isReturned() == false)
+				.map(IssuedBook::getId).collect(Collectors.toList());
 	}
-	
+
 	@ModelAttribute("bookTypes")
-	List<String> getBookTypes() {				
+	List<String> getBookTypes() {
 		return bs.getAllBooks().stream().map(Book::getType).collect(Collectors.toList());
 	}
 
-
 	@RequestMapping("/returnIssuedBookById")
 	public ModelAndView getReturnBookPage() {
-		if(getBookIds().size() < 1 || getBookIds() == null)
-		{
+		if (getBookIds().size() < 1 || getBookIds() == null) {
 			ModelAndView mv = new ModelAndView();
 			mv.addObject("message", "You have no books to return");
 			mv.setViewName("Menu");
@@ -68,29 +64,37 @@ public class IssuedBookController {
 
 	@RequestMapping("/returnBook")
 	public ModelAndView returnBookController(@ModelAttribute("command") IssuedBook book) {
-		
+
 		ModelAndView modelAndView = new ModelAndView();
-		LocalDate now = LocalDate.now();
 		IssuedBook ib = ibs.getIssuedBookById(book.getId());
-		String message = null;
-		if (ib == null)
-			message = "Error, could not find book";
-		else {
-			ib.setActualReturn(book.getActualReturn());
-			ib.setReturned(true);
-			
-			Period days = Period.between(ib.getExpectedReturn(), ib.getActualReturn());
-			
-			if(days.getDays() > 0)
-				ib.setLateReturnFee(days.getDays() * bs.searchBooksByType(ib.getType()).getLateFee());
-			else
-				ib.setLateReturnFee(0);
-			
-			if (ibs.updateIssuedBook(ib)) {
-				message = "Book returned";
-			} else
-				message = "Error, book could not be returned";
+		Book updateBook = bs.searchBooksByType(ib.getType());
+
+		if (updateBook.getTotalIssued() < 1) {
+			modelAndView.addObject("message",
+					"All the books have been returned, entry has been removed from the system.");
+			ibs.deleteIssuedBookById(book.getId());
+			modelAndView.setViewName("ReturnBookById");
+			return modelAndView;
 		}
+
+		updateBook.setTotalIssued(updateBook.getTotalIssued() - 1);
+
+		String message = null;
+
+		ib.setActualReturn(book.getActualReturn());
+		ib.setReturned(true);
+
+		Period days = Period.between(ib.getExpectedReturn(), ib.getActualReturn());
+
+		if (days.getDays() > 0)
+			ib.setLateReturnFee(days.getDays() * bs.searchBooksByType(ib.getType()).getLateFee());
+		else
+			ib.setLateReturnFee(0);
+
+		if (ibs.updateIssuedBook(ib)) {
+			message = "Book returned";
+		} else
+			message = "Error, book could not be returned";
 
 		modelAndView.addObject("message", message);
 
