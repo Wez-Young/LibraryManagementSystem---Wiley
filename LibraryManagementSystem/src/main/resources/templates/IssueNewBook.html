@@ -25,15 +25,13 @@
 	<br>
 	<br>
 
-	<form action="#" th:action="@{./bookIssued}" th:object="${command}"
-		method="post">
-		Select Book : <select  th:field="*{type}">
-		<option th:each="type : ${bookTypes}" th:value="*{type}" />
-		</select><br>
+	<form action="#" th:action="@{./bookIssued}" th:object="${command}" method="post">
+		Select Book :  <input type="text" th:field="*{type}"><br>
 		<br> Enter Today's Date : <input type="date"
 			th:field="*{issuedDate}"><br> <br> <input
 			type="submit" value="Take Book">
 	</form>
+	<a href="./menu">Go to menu</a>
 	<br>
 	<br>
 	<p th:text="${message}" style="color: red"></p>

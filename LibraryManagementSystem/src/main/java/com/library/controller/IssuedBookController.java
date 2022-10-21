@@ -39,13 +39,13 @@ public class IssuedBookController {
 
 	
 	@ModelAttribute("bookIds")
-	List<Integer> getBookIds(HttpServletRequest request) {		
-		session = request.getSession();
+	List<Integer> getBookIds() {		
 		User emp = (User)session.getAttribute("employee");
 		
 		return ibs.getAllIssuedBooksByEmployeeId(emp.getId()).stream()
-		.map(IssuedBook::getId)
-		.collect(Collectors.toList());
+				.filter(book -> book.isReturned() == false)
+				.map(IssuedBook::getId)
+				.collect(Collectors.toList());
 	}
 	
 	@ModelAttribute("bookTypes")
@@ -53,14 +53,22 @@ public class IssuedBookController {
 		return bs.getAllBooks().stream().map(Book::getType).collect(Collectors.toList());
 	}
 
+
 	@RequestMapping("/returnIssuedBookById")
 	public ModelAndView getReturnBookPage() {
+		if(getBookIds().size() < 1 || getBookIds() == null)
+		{
+			ModelAndView mv = new ModelAndView();
+			mv.addObject("message", "You have no books to return");
+			mv.setViewName("Menu");
+			return mv;
+		}
 		return new ModelAndView("ReturnBookById", "command", new IssuedBook());
 	}
 
 	@RequestMapping("/returnBook")
 	public ModelAndView returnBookController(@ModelAttribute("command") IssuedBook book) {
-
+		
 		ModelAndView modelAndView = new ModelAndView();
 		LocalDate now = LocalDate.now();
 		IssuedBook ib = ibs.getIssuedBookById(book.getId());

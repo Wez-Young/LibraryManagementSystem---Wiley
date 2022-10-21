@@ -20,7 +20,7 @@ public List<IssuedBook> findByType(String type);
 	
 	@Transactional
 	@Modifying
-	@Query(value = "insert into issuedBook values(:id,:actualReturn,:expectedReturn,:issuedDate,:lateReturnFee, :type, :isReturned)",nativeQuery = true)
+	@Query(value = "insert into issuedBook values(:id, :actualReturn,:expectedReturn,:issuedDate,:lateReturnFee, :type, :isReturned)",nativeQuery = true)
 	public int insertIssuedBook(
 			@Param("id") int bookId,
 			@Param("type") String type,
@@ -34,7 +34,7 @@ public List<IssuedBook> findByType(String type);
 	Collection<IssuedBook> findAllLibraryEmployeesIssuedBooks(@Param("empId") int id);
 	
 	@Query(value = "insert into libraryemployees_books values(:employee_id,:books_id)",nativeQuery = true)
-	public int insertIssuedBook(
+	public int insertIssuedBookInRelationship(
 			@Param("employee_id") int id,
 			@Param("books_id") int b_id);
 

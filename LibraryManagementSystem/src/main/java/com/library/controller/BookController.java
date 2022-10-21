@@ -1,8 +1,6 @@
 package com.library.controller;
 
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +30,11 @@ public class BookController {
 	@ModelAttribute("library")
 	List<Book> getBooks() {				
 		return bookService.getAllBooks().stream().collect(Collectors.toList());
+	}
+	
+	@ModelAttribute("bookTypes")
+	List<String> getBookTypes() {				
+		return bookService.getAllBooks().stream().map(Book::getType).collect(Collectors.toList());
 	}
 	
 	@RequestMapping("/issueNewBook")

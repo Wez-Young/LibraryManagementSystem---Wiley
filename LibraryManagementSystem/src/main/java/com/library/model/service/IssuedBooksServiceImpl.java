@@ -54,7 +54,7 @@ public class IssuedBooksServiceImpl implements IssuedBooksService {
 	public boolean addIssuedBook(IssuedBook book, HttpSession session) {
 		User usr = (User)session.getAttribute("employee");
 		try {
-			int rows = issuedBookDao.insertIssuedBook(
+			int rows = issuedBookDao.insertIssuedBookInRelationship(
 					usr.getId(),
 					book.getId() 
 					);
