@@ -2,15 +2,14 @@
 <html xmlns:th="https://thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
-<link th:href="@{/styles/employeestyle.css}" rel="stylesheet">
+<title>Login</title>
 </head>
 <body>
-<h1>Welcome to Employee Management System</h1>
-<form action="#" th:action="@{./loginUser}" th:object="${command}" method="post">
+<h1>Welcome to Library Management System</h1>
+<form action="#" th:action="@{./loginEmployee}" th:object="${command}" method="post">
 
-Enter UserName : <input type="text" th:field="*{userName}"><br><br>
-Enter Password : <input type="password" th:field="*{password}"><br><br>
+Enter Employee ID : <input type="text" th:field="*{id}"><br><br>
+Enter Password : <input type="text" th:field="*{password}"><br><br>
 <input type="submit" value="Login">
 </form>
 <br><br>

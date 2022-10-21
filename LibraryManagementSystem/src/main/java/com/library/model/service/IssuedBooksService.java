@@ -3,6 +3,8 @@ package com.library.model.service;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 
 import com.library.entity.IssuedBook;
@@ -17,5 +19,6 @@ public interface IssuedBooksService {
 	boolean updateIssuedBook(IssuedBook book);
 	boolean deleteIssuedBookById(int id);
 	List<IssuedBook> searchIssuedBooksByType(String type);
+	public boolean addIssuedBook(IssuedBook book, HttpSession session);
 
 }

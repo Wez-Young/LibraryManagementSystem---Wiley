@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="https;//thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Return</title>
+</head>
+<body>
+<h1> Return book </h1>
+<form action="#" th:action="@{./returnBook}" th:object="${command}" method="post">
+	Select Book ID to Return: 
+	<select th:field="*{id}">	
+		<option th:each="bookId : ${bookIds}" th:value="${bookId}" th:text="${bookId}"/>
+	</select>
+	<br> 
+	<input type="submit" value="Issue Book">
+</form>
+<a href="./">Return to menu</a>
+<br>
+<br>
+</body>
+</html>

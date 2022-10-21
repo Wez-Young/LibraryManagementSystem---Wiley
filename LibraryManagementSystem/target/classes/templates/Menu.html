@@ -5,6 +5,9 @@
 <title>Books Issued</title>
 </head>
 <body>
+	<hr>
+	<h2 th:text="'Welcome '+${session.employee.id}+'!'"></h2>
+	<hr>
 <h1> Current books </h1>
 <table border = "1">
   <tr>
@@ -23,6 +26,7 @@
     <td th:text="${book.expectedReturn}"/>
     <td th:text="${book.actualReturn}"/>
 	<td th:text="${book.lateReturnFee}"/>
+	<td th:text="${book.isReturned}"/>
 	</tr>
 
 </table>

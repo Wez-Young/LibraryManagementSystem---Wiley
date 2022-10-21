@@ -3,10 +3,13 @@ package com.library.model.service;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.library.entity.IssuedBook;
+import com.library.entity.User;
 import com.library.model.persistence.IssuedBookDao;
 
 @Service
@@ -14,6 +17,8 @@ public class IssuedBooksServiceImpl implements IssuedBooksService {
 
 	@Autowired
 	private IssuedBookDao issuedBookDao;
+	@Autowired
+	private HttpSession session;
 	
 	@Override
 	public IssuedBook getIssuedBookById(int id) {
@@ -34,7 +39,24 @@ public class IssuedBooksServiceImpl implements IssuedBooksService {
 					book.getIssuedDate(), 
 					book.getExpectedReturn(), 
 					book.getActualReturn(), 
-					book.getLateReturnFee()
+					book.getLateReturnFee(),
+					book.isReturned()
+					);
+			if (rows > 0)
+				return true;
+			}
+			catch(Exception ex) {
+				return false;
+			}
+			return false;
+	}
+	
+	public boolean addIssuedBook(IssuedBook book, HttpSession session) {
+		User usr = (User)session.getAttribute("employee");
+		try {
+			int rows = issuedBookDao.insertIssuedBook(
+					usr.getId(),
+					book.getId() 
 					);
 			if (rows > 0)
 				return true;

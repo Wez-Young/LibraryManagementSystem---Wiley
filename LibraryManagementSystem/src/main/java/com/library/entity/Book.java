@@ -3,6 +3,7 @@ package com.library.entity;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -15,14 +16,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class Book {
-	@Id
-	int bookId;
-	String type;
-	double lateFee;
-	int totalIssued;
+	@Id @GeneratedValue
+	private int bookId;
+	private String type;
+	private double lateFee;
+	private int totalIssued;
 	
 	@OneToMany
-	Collection<IssuedBook> issuedBooks;
+	private Collection<IssuedBook> issuedBooks;
 	
 
 }

@@ -1,11 +1,7 @@
 package com.library.entity;
 
-import java.util.Collection;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -16,11 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="LibraryEmployees")
-public class Employee {
-	@Id @GeneratedValue
+@Table(name="LibraryUser")
+public class User {
+	@Id
 	private int id;
-	private String name;
-	@OneToMany
-	private Collection<IssuedBook> books;
+	private String password;
 }

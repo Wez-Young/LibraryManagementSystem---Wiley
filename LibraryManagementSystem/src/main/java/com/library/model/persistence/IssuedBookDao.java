@@ -20,17 +20,22 @@ public List<IssuedBook> findByType(String type);
 	
 	@Transactional
 	@Modifying
-	@Query(value = "insert into issuedBook values(:id,:actualReturn,:expectedReturn,:issuedDate,:lateReturnFee, :type)",nativeQuery = true)
+	@Query(value = "insert into issuedBook values(:id,:actualReturn,:expectedReturn,:issuedDate,:lateReturnFee, :type, :isReturned)",nativeQuery = true)
 	public int insertIssuedBook(
 			@Param("id") int bookId,
 			@Param("type") String type,
 			@Param("issuedDate") LocalDate issuedDate,
 			@Param("expectedReturn") LocalDate expectedReturn, 
 			@Param("actualReturn") LocalDate actualReturn,
-			@Param("lateReturnFee") double lateReturnFee);
+			@Param("lateReturnFee") double lateReturnFee,
+			@Param("isReturned") boolean isReturned);
 	
-	@Query(value = "SELECT id, actualReturn, expectedReturn, issuedDate, lateReturnFee, type FROM IssuedBook i inner join libraryemployees_books e WHERE e.employee_id = :empId and id = :empId", nativeQuery = true)
+	@Query(value = "SELECT id, actualReturn, expectedReturn, issuedDate, lateReturnFee, type, isReturned FROM IssuedBook i inner join libraryemployees_books e WHERE e.employee_id = :empId and id = :empId", nativeQuery = true)
 	Collection<IssuedBook> findAllLibraryEmployeesIssuedBooks(@Param("empId") int id);
-
+	
+	@Query(value = "insert into libraryemployees_books values(:employee_id,:books_id)",nativeQuery = true)
+	public int insertIssuedBook(
+			@Param("employee_id") int id,
+			@Param("books_id") int b_id);
 
 }

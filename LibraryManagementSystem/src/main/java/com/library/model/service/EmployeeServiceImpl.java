@@ -11,10 +11,6 @@ import com.library.model.persistence.EmployeeDao;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-
-	@Autowired
-	private RestTemplate restTemplate;
-
 	@Autowired
 	private EmployeeDao employeeDao;
 
@@ -34,16 +30,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 			int rows = employeeDao.insertEmployee(employee.getId(), employee.getName());
 			if (rows > 0)
 				return true;
-		} catch (Exception ex) {
+			}
+			catch(Exception ex) {
+				return false;
+			}
 			return false;
-		}
-		return false;
 	}
 
 	@Override
 	public boolean updateEmployee(Employee employee) {
 		Employee emp = employeeDao.findById(employee.getId()).orElse(null);
-		if (emp == null)
+		if(emp == null)
 			return false;
 		employeeDao.save(employee);
 		return true;
@@ -55,10 +52,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		return true;
 	}
+	
 
-	@Override
-	public Employee loginEmployee(Employee employee) {
-		return restTemplate.getForObject("http://localhost:8084/login/" + employee.getName(), Employee.class);
-
-	}
 }

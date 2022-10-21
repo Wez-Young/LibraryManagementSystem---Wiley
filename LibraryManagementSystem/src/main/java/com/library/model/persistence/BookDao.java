@@ -17,7 +17,7 @@ import com.library.entity.IssuedBook;
 @Repository
 public interface BookDao extends JpaRepository<Book, Integer> {
 
-	public List<Book> findByType(String type);
+	public Book findByType(String type);
 	
 	@Transactional
 	@Modifying

@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public List<Book> searchBooksByType(String type) {
+	public Book searchBooksByType(String type) {
 		return bookDao.findByType(type);
 	}
 

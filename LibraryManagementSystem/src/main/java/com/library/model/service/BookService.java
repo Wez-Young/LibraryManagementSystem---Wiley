@@ -15,7 +15,7 @@ public interface BookService {
 	boolean addNewBook(Book book);
 	boolean updateBook(Book book);
 	boolean deleteBookById(int id);
-	List<Book> searchBooksByType(String type);
+	Book searchBooksByType(String type);
 	
 
 }
